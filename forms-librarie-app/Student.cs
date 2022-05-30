@@ -127,7 +127,11 @@ namespace forms_librarie_app
 				MessageBox.Show($"Studentul {tbName.Text} {tbSurname.Text} a fost șters cu succes!");
 			} else
 			{
-				MessageBox.Show($"Studentul {tbName.Text} {tbSurname.Text} nu a fost găsit în baza de date!");
+				string nl = "\r\n";
+				string errorMessage = $"Nu a fost găsit nici-un student care să corespundă următoarelor date:{nl}" +
+					$" - Nume: {tbName.Text}{nl} - Prenume: {tbSurname.Text}{nl}" +
+					$" - Anul admiterii: {(int)nudYear.Value}{nl} - Specialitatea: {cbSpeciality.Text}";
+				MessageBox.Show(errorMessage);
 			}
 			
 		}
