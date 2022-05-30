@@ -19,7 +19,7 @@ namespace forms_librarie_app
             string hostname = Dns.GetHostName();
             string serverName = ("win-7".Equals(hostname)) ? "sqlserver" : "sqlexpress";
             string dataSource = hostname + "\\" + serverName;
-            string database = "librarius";
+            string database = "Student";
             string connectionString = "Data Source=" + dataSource + "; Database=" + database + "; Integrated Security = true;";
             connection = new SqlConnection(connectionString);
             connection.Open();
@@ -46,7 +46,7 @@ namespace forms_librarie_app
         public static int getSpecialtyId(string name)
         {
             SqlCommand command = new SqlCommand(
-                $"select specialtyId from Specialties where denumire = '{name}'", connection);
+                $"select specialtyId from Specialties where specialtyName = '{name}'", connection);
             SqlDataAdapter adapter = new SqlDataAdapter(command);
             DataTable table = new DataTable();
             adapter.Fill(table);
@@ -65,7 +65,7 @@ namespace forms_librarie_app
             return getSpecialtyId(name);
         }
 
-        public static void addStudent(string name, string surname, string birthdate, int admissionYear, int specialtyId,
+        public static void addStudent(string name, string surname, DateTime birthdate, int admissionYear, int specialtyId,
             string sex, string studies, bool requiresHostel)
         {
             SqlCommand command = new SqlCommand("sp_addStudent", connection);
@@ -82,5 +82,39 @@ namespace forms_librarie_app
             command.ExecuteNonQuery();
         }
 
+		public static bool existsStudent(string name, string surname, int admissionYear, string specialty)
+		{
+			string query = $"select * from vStudents " +
+					$"where Name = '{name}' and Surname = '{surname}' and AdmissionYear = '{admissionYear}' " +
+					$"and Specialty = '{specialty}'";
+			SqlCommand command = new SqlCommand(query, connection);
+			SqlDataAdapter adapter = new SqlDataAdapter(command);
+			DataTable table = new DataTable();
+			adapter.Fill(table);
+
+			return table.Rows.Count > 0;
+		}
+
+		public static bool deleteStudent(string name, string surname, int admissionYear, string specialty)
+		{
+			string query = $"delete from Students where studentName = '{name}' " +
+				$"and studentSurname = '{surname}' and studentAdmissionYear = '{admissionYear}' " +
+				$"and studentSpecialtyId = '{getSpecialtyId(specialty)}'";
+			SqlCommand command = new SqlCommand(query, connection);
+			int commandResult = command.ExecuteNonQuery();
+			return commandResult == 1 ? true : false;
+		}
+
+		public static DataTable searchStudent(string input) 
+		{
+			string query = $"select * from vStudents where concat(Name,' ',Surname) like " +
+				$"'%{input}%' or Name like '%{input}%' or Surname like '%{input}%'";
+			SqlCommand command = new SqlCommand(query, connection);
+			SqlDataAdapter adapter = new SqlDataAdapter(command);
+			DataTable table = new DataTable();
+			adapter.Fill(table);
+
+			return table;
+		}
     }
 }

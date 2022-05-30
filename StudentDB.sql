@@ -1,6 +1,5 @@
 use master
-
--- use master; alter database Student set single_user with rollback immediate; drop database Student
+go
 
 IF NOT EXISTS (
     SELECT name
@@ -8,6 +7,9 @@ IF NOT EXISTS (
         WHERE name = 'Student'
 )
 CREATE DATABASE Student
+go
+
+use Student
 GO
 
 create table Students (
@@ -26,11 +28,12 @@ create table Specialties (
 	specialtyId int primary key identity,
 	specialtyName varchar(50) unique not null
 );
+go
 
-
-alter table Studenti
+alter table Students
 add constraint FK_Student_Specialty
-foreign key references Specialties(specialtyId)
+foreign key(studentSpecialtyId) references Specialties(specialtyId)
+
 
 go
 create view vStudents

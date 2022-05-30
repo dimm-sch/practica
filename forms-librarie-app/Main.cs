@@ -39,6 +39,8 @@ namespace forms_librarie_app
 			panelContent.Controls.Add(catalog);
 			buttonMainPageLogOut.Visible = false;
 
+			labelNavStudent.Cursor = Cursors.Hand;
+
 
 			catalog = new Catalog();
 			favoriteBooksPage = new FavoriteBooks(catalog);

@@ -81,7 +81,7 @@ namespace forms_librarie_app
                 return;
             }
 
-            string specialty = cbSpeciality.Text;
+            string specialty = cbSpeciality.Text.ToLower();
             int specialtyId = -1;
             var specs = StudentDatabase.getSpecialties();
 
@@ -95,7 +95,55 @@ namespace forms_librarie_app
 
             string name = tbName.Text;
             string surname = tbSurname.Text;
-            //TODO continue
-        }
-    }
+			DateTime birthdate = dtpDate.Value;
+			int admissionYear = (int)nudYear.Value;
+			string sex = gbSex.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+			string formattedSex = (sex.Equals("Masculin") ? "m" : "f");
+			string studies = gbStudies.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+			bool requiresHostel = cbRequiresHostel.Checked;
+
+			StudentDatabase.addStudent(name, surname, birthdate, admissionYear, specialtyId,
+				formattedSex, studies, requiresHostel);
+			MessageBox.Show("Studentul a fost adaugat cu succes!");
+		}
+
+		private void btnEditStudent_Click(object sender, EventArgs e)
+		{
+			EditStudent es = new EditStudent();
+			es.Show();
+		}
+
+		private void btnDeleteStudent_Click(object sender, EventArgs e)
+		{
+			if (!validateStudentName())
+			{
+				MessageBox.Show("Completați numele și prenumele!");
+				return;
+			}
+
+			bool successfulDeletion = StudentDatabase.deleteStudent(tbName.Text, tbSurname.Text, (int)nudYear.Value, cbSpeciality.Text);
+			if (successfulDeletion)
+			{
+				MessageBox.Show($"Studentul {tbName.Text} {tbSurname.Text} a fost șters cu succes!");
+			} else
+			{
+				MessageBox.Show($"Studentul {tbName.Text} {tbSurname.Text} nu a fost găsit în baza de date!");
+			}
+			
+		}
+
+		private void btnDeleteHelp_Click(object sender, EventArgs e)
+		{
+			string nl = "\r\n";
+			string message = $"Butonul 'Șterge' va șterge studentul din baza de date" +
+				$" în baza următoarelor câmpuri de mai sus:{nl} - Nume{nl} - Prenume{nl} - Anul admiterii{nl} - Specialitatea{nl}";
+			MessageBox.Show(message);
+		}
+
+		private void btnSearchStudent_Click(object sender, EventArgs e)
+		{
+			SearchStudent ss = new SearchStudent();
+			ss.Show();
+		}
+	}
 }

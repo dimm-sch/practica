@@ -1,8 +1,8 @@
-Nume: ion
-Prenume: opre
-Data nașterii: 01.01.2000
-Anul admiterii: 2020
-Specialitatea: Informatica
+Nume: Rebeja
+Prenume: Marius
+Data nașterii: 5/7/2003
+Anul admiterii: 2017
+Specialitatea: Secretariat
 Sex: Masculin
 Studii: Buget
-Necesar cămin
+Nu e necesar cămin
