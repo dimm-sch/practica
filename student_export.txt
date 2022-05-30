@@ -1,0 +1,8 @@
+Nume: ion
+Prenume: opre
+Data nașterii: 01.01.2000
+Anul admiterii: 2020
+Specialitatea: Informatica
+Sex: Masculin
+Studii: Buget
+Necesar cămin
